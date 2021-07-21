@@ -1,0 +1,29 @@
+## Frontend
+# dependencies
+kotopedia-react/node_modules
+kotopedia-react/.pnp
+kotopedia-react/.pnp.js
+
+# testing
+kotopedia-react/coverage
+
+# production
+kotopedia-react/build
+
+# misc
+kotopedia-react/.DS_Store
+kotopedia-react/.env.local
+kotopedia-react/.env.development.local
+kotopedia-react/.env.test.local
+kotopedia-react/.env.production.local
+
+kotopedia-react/npm-debug.log*
+kotopedia-react/yarn-debug.log*
+kotopedia-react/yarn-error.log*
+
+## Backend
+# cache
+kotopedia-django/**/__pycache__/
+
+# secret key
+kotopedia-django/backend/.env
