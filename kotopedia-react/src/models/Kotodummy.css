@@ -1,0 +1,31 @@
+*.before,
+*.after,
+* {
+  padding: 0;
+  margin: 0;
+}
+
+ul, lo {
+  list-style: none;
+}
+
+img {
+  width: 50%;
+}
+
+body {
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.card-grid {
+  margin: 2em 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 48px;
+}
+
+.personality {
+  width: 20%;
+}

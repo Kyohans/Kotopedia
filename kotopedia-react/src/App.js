@@ -1,6 +1,5 @@
 import './App.css';
-import Kotodummies from './Kotodummy.js';
-
+import Kotodummies from './models/Kotodummy.js';
 
 function App() {
   return (
