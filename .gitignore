@@ -25,5 +25,9 @@ kotopedia-react/yarn-error.log*
 # cache
 kotopedia-django/**/__pycache__/
 
+# directories
+kotopedia-django/media/
+kotopedia-django/staticfiles/
+
 # secret key
 kotopedia-django/backend/.env
