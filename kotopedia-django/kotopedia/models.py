@@ -36,6 +36,7 @@ class Kotodummy(models.Model):
   description = models.TextField()
   stage_type = models.CharField(max_length = 20, choices = StageType.choices)
   rarity_type = models.CharField(max_length = 20, choices = RarityType.choices, blank = True)
+  password = models.ForeignKey('Word', on_delete = models.DO_NOTHING, blank = True, null = True)
 
   def __str__(self):
     return self.name
@@ -61,7 +62,6 @@ class Kotodummy(models.Model):
 class Word(models.Model):
   word = models.CharField(max_length = 100)
   stage_type = models.CharField(max_length = 20, choices = StageType.choices, blank = True)
-  password = models.ForeignKey(Kotodummy, on_delete = models.DO_NOTHING, blank = True, null = True)
 
   def __str__(self):
     return self.word
@@ -73,6 +73,16 @@ class Word(models.Model):
   @admin.display
   def stage(obj):
     return obj.stage_type
+
+  @admin.display
+  def password(obj):
+    return ', '.join(w.word for w in obj.password_set.all())
+  
+  def save(self, *args, **kwargs):
+    if self.personality_set.count() >= 3:
+      raise TooManyPersonalitiesError(self)
+    else:
+      super().save()
 
 class Personality(models.Model):
   personality = models.CharField(max_length = 15, choices = PersonalityType.choices)
