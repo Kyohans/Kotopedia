@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from djchoices import ChoiceItem, DjangoChoices
+import os
 
 class TooManyPersonalitiesError(Exception):
   def __init__(self, obj):
@@ -28,7 +29,7 @@ class RarityType(DjangoChoices):
   ULTRA_RARE = ChoiceItem('Ultra Rare')
 
 def valid_personalities(obj):
-  return True if len(obj.personality_set.all()) <= 3 else False
+  return True if len(obj) <= 3 else False
 
 class Kotodummy(models.Model):
   no = models.IntegerField(primary_key = True)
@@ -36,16 +37,9 @@ class Kotodummy(models.Model):
   description = models.TextField()
   stage_type = models.CharField(max_length = 20, choices = StageType.choices)
   rarity_type = models.CharField(max_length = 20, choices = RarityType.choices, blank = True)
-  image = models.ImageField(blank = True)
 
   def __str__(self):
     return self.name
-  
-  def save(self, *args, **kwargs):
-    if not valid_personalities(self):
-      raise TooManyPersonalitiesError(self)
-    else:
-      super().save(self, *args, **kwargs)
   
   @admin.display
   def personality(obj):

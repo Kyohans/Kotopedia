@@ -13,17 +13,16 @@ class WordPersonalityInLine(admin.TabularInline):
 
   exclude = ['kotodummy']
 
+@admin.register(Word)
 class WordAdmin(admin.ModelAdmin):
   list_display = ('word', 'stage', 'personality', 'password')
   ordering = ['word']
 
   inlines = [WordPersonalityInLine]
 
+@admin.register(Kotodummy)
 class KotodummyAdmin(admin.ModelAdmin):
   list_display = ('name', 'description', 'personality', 'stage', 'rarity')
   ordering = ['no']
 
   inlines = [KotodummyPersonalityInLine]
-
-admin.site.register(Kotodummy, KotodummyAdmin)
-admin.site.register(Word, WordAdmin)
