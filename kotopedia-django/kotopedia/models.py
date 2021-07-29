@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib import admin
 from djchoices import ChoiceItem, DjangoChoices
-import os
 
 class TooManyPersonalitiesError(Exception):
   def __init__(self, obj):
@@ -40,6 +39,12 @@ class Kotodummy(models.Model):
 
   def __str__(self):
     return self.name
+  
+  def save(self, *args, **kwargs):
+    if self.personality_set.count() >= 3:
+      raise TooManyPersonalitiesError(self)
+    else:
+      super().save()
   
   @admin.display
   def personality(obj):
