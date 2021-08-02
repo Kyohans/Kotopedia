@@ -36,7 +36,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 AWS_LOCATION = 'assets/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'kotopedia/static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -144,13 +144,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+STATIC_LOCATION = 'static'
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'backend.storage_backends.StaticStorage'
 
 # Media files
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_FILE_STORAGE = 'backend.storage_backends.PublicMediaStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -36,3 +36,14 @@ class KotodummyModelTest(TestCase):
     kotodummy.personality_set.create(personality = PersonalityType.SERIOUS)
 
     self.assertRaises(TooManyPersonalitiesError, kotodummy.save)
+  
+  def test_saving_kotodummy_with_exactly_three_personalities(self):
+    kotodummy = create_kotodummy(1, 'Kotodummy', '', StageType.CHILD)
+    kotodummy.save()
+
+    kotodummy.personality_set.create(personality = PersonalityType.CUTE)
+    kotodummy.personality_set.create(personality = PersonalityType.CHEERFUL)
+    kotodummy.personality_set.create(personality = PersonalityType.DARK)
+    kotodummy.save()
+
+    self.assertEqual(3, kotodummy.personality_set.count())

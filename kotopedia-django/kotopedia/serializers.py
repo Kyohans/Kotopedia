@@ -11,6 +11,7 @@ class KotodummySerializer(serializers.ModelSerializer):
       'personality',
       'stage',
       'rarity',
+      'image',
     )
 
 class WordSerializer(serializers.ModelSerializer):

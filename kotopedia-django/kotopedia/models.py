@@ -27,59 +27,57 @@ class RarityType(DjangoChoices):
   SUPER_RARE = ChoiceItem('Super Rare')
   ULTRA_RARE = ChoiceItem('Ultra Rare')
 
-def valid_personalities(obj):
-  return True if len(obj) <= 3 else False
-
 class Kotodummy(models.Model):
   no = models.IntegerField(primary_key = True)
   name = models.CharField(max_length = 50)
   description = models.TextField()
   stage_type = models.CharField(max_length = 20, choices = StageType.choices)
   rarity_type = models.CharField(max_length = 20, choices = RarityType.choices, blank = True)
-  password = models.ForeignKey('Word', on_delete = models.DO_NOTHING, blank = True, null = True)
+  image = models.ImageField(null = True, blank = True)
 
   def __str__(self):
     return self.name
   
   def save(self, *args, **kwargs):
-    if self.personality_set.count() >= 3:
+    if self.personality_set.count() > 3:
       raise TooManyPersonalitiesError(self)
     else:
       super().save()
   
   @admin.display
-  def personality(obj):
-    return ', '.join(p.personality for p in obj.personality_set.all())
+  def personality(self):
+    return ', '.join(p.personality for p in self.personality_set.all())
 
   @admin.display
-  def stage(obj):
-    return obj.stage_type
+  def stage(self):
+    return self.stage_type
   
   @admin.display
-  def rarity(obj):
-    return obj.rarity_type
+  def rarity(self):
+    return self.rarity_type if self.rarity_type else '-'
 
 class Word(models.Model):
   word = models.CharField(max_length = 100)
   stage_type = models.CharField(max_length = 20, choices = StageType.choices, blank = True)
+  kotodummy = models.OneToOneField(Kotodummy, on_delete = models.DO_NOTHING, null = True, blank = True)
 
   def __str__(self):
     return self.word
 
   @admin.display
-  def personality(obj):
-    return ', '.join(p.personality for p in obj.personality_set.all())
+  def personality(self):
+    return ', '.join(p.personality for p in self.personality_set.all())
 
   @admin.display
-  def stage(obj):
-    return obj.stage_type
-
+  def stage(self):
+    return self.stage_type if self.stage_type else '-'
+  
   @admin.display
-  def password(obj):
-    return ', '.join(w.word for w in obj.password_set.all())
+  def password(self):
+    return self.kotodummy
   
   def save(self, *args, **kwargs):
-    if self.personality_set.count() >= 3:
+    if self.personality_set.count() > 3:
       raise TooManyPersonalitiesError(self)
     else:
       super().save()

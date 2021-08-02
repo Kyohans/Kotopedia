@@ -22,10 +22,9 @@ class WordModelTest(TestCase):
     k = Kotodummy(1, 'Alienette', '', StageType.GRADUATED)
     k.save()
 
-    w.kotodummy_set.create(no = k.no, name = k.name, description = k.description, stage_type = k.stage_type)
+    w.kotodummy = k
     
-    self.assertEqual(1, w.kotodummy_set.count())
-    self.assertEqual('Alienette', w.kotodummy_set.all()[0].name)
+    self.assertEqual('Alienette', w.kotodummy.name)
   
   def test_add_personalities_to_word(self):
     w = create_word('Fireworks')
@@ -46,6 +45,14 @@ class WordModelTest(TestCase):
     w.personality_set.create(personality = PersonalityType.COOL)
 
     self.assertRaises(TooManyPersonalitiesError, w.save)
+  
+  def test_saving_word_with_exactly_three_personalities(self):
+    w = create_word('Test')
+    w.save()
 
-    
+    w.personality_set.create(personality = PersonalityType.CHEERFUL)
+    w.personality_set.create(personality = PersonalityType.CUTE)
+    w.personality_set.create(personality = PersonalityType.SERIOUS)
+    w.save()
 
+    self.assertEqual(3, w.personality_set.count())
