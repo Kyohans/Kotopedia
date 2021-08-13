@@ -1,4 +1,5 @@
 from typing import Optional
+from random import randint
 
 from django.test import TestCase
 from django.db.utils import IntegrityError
@@ -6,14 +7,15 @@ from django.db.utils import IntegrityError
 from kotopedia.models import *
 
 def create_word(text: str, stage = Optional[StageType]) -> Word:
-  return Word(1, word = text, stage_type = stage)
+  return Word(randint(0, 500), word = text, stage_type = stage)
 
 class WordModelTest(TestCase):
 
   def test_create_word_with_no_stage(self):
     w = create_word('test')
+    w.save()
 
-    self.assertEqual(w.id, 1)
+    self.assertEqual(w.word, 'test')
   
   def test_add_kotodummy_to_word_password_list(self):
     w = create_word('Alien')
@@ -35,7 +37,7 @@ class WordModelTest(TestCase):
 
     self.assertEqual(2, w.personality_set.count())
 
-  def test_adding_more_than_three_personalities_to_word_fails(self):
+  def test_adding_more_than_three_personalities_to_word_successfully(self):
     w = create_word('Test')
     w.save()
 
@@ -43,8 +45,11 @@ class WordModelTest(TestCase):
     w.personality_set.create(personality = PersonalityType.CUTE)
     w.personality_set.create(personality = PersonalityType.SERIOUS)
     w.personality_set.create(personality = PersonalityType.COOL)
+    w.personality_set.create(personality = PersonalityType.COOL)
+    w.personality_set.create(personality = PersonalityType.DARK)
+    w.save()
 
-    self.assertRaises(TooManyPersonalitiesError, w.save)
+    self.assertEqual(6, w.personality_set.count())
   
   def test_saving_word_with_exactly_three_personalities(self):
     w = create_word('Test')
@@ -56,3 +61,11 @@ class WordModelTest(TestCase):
     w.save()
 
     self.assertEqual(3, w.personality_set.count())
+
+  def test_word_must_be_unique(self):
+    word_one = create_word('Test')
+    word_one.save()
+
+    word_two = create_word('Test')
+
+    self.assertRaises(IntegrityError, word_two.save)

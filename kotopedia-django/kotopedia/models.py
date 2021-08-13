@@ -1,19 +1,20 @@
 from django.db import models
+from django.db.models import F, Func
 from django.contrib import admin
 from djchoices import ChoiceItem, DjangoChoices
 
 class TooManyPersonalitiesError(Exception):
   def __init__(self, obj):
     self.obj = obj
-    self.message = f'{obj} is not allowed to have more than three personalities!'
+    self.message = f'{obj} has too many personalities!'
     super().__init__(self.message)
 
 class PersonalityType(DjangoChoices):
   CHEERFUL = ChoiceItem('Cheerful')
+  COOL = ChoiceItem('Cool')
   CUTE = ChoiceItem('Cute')
   DARK = ChoiceItem('Dark')
   SERIOUS = ChoiceItem('Serious')
-  COOL = ChoiceItem('Cool')
 
 class StageType(DjangoChoices):
   CHILD = ChoiceItem('Child')
@@ -29,7 +30,7 @@ class RarityType(DjangoChoices):
 
 class Kotodummy(models.Model):
   no = models.IntegerField(primary_key = True)
-  name = models.CharField(max_length = 50)
+  name = models.CharField(max_length = 50, unique = True)
   description = models.TextField()
   stage_type = models.CharField(max_length = 20, choices = StageType.choices)
   rarity_type = models.CharField(max_length = 20, choices = RarityType.choices, blank = True)
@@ -57,9 +58,16 @@ class Kotodummy(models.Model):
     return self.rarity_type if self.rarity_type else '-'
 
 class Word(models.Model):
-  word = models.CharField(max_length = 100)
+  word = models.CharField(max_length = 50, unique = True)
   stage_type = models.CharField(max_length = 20, choices = StageType.choices, blank = True)
   kotodummy = models.OneToOneField(Kotodummy, on_delete = models.DO_NOTHING, null = True, blank = True)
+
+  @admin.display
+  def word_ordering(self):
+    return self.word.lower()
+
+  class Meta:
+    ordering = [Func(F('word'), function = 'LOWER')]
 
   def __str__(self):
     return self.word
@@ -75,9 +83,9 @@ class Word(models.Model):
   @admin.display
   def password(self):
     return self.kotodummy
-  
+
   def save(self, *args, **kwargs):
-    if self.personality_set.count() > 3:
+    if self.personality_set.count() > 6:
       raise TooManyPersonalitiesError(self)
     else:
       super().save()

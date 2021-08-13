@@ -1,3 +1,4 @@
+from logging import currentframe
 from typing import Optional
 
 from django.test import TestCase
@@ -47,3 +48,11 @@ class KotodummyModelTest(TestCase):
     kotodummy.save()
 
     self.assertEqual(3, kotodummy.personality_set.count())
+  
+  def test_kotodummy_name_must_be_unique(self):
+    kotodummy_one = create_kotodummy(1, 'Kotodummy', '', StageType.CHILD)
+    kotodummy_one.save()
+
+    kotodummy_two = create_kotodummy(2, 'Kotodummy', '', StageType.CHILD)
+    
+    self.assertRaises(IntegrityError, kotodummy_two.save)
