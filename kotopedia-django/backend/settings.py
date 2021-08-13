@@ -23,21 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('key')
 
-# AWS ACCESS
-AWS_ACCESS_KEY_ID = config('aws_access_key_id')
-AWS_SECRET_ACCESS_KEY = config('aws_secret')
-AWS_STORAGE_BUCKET_NAME = config('aws_storage_bucket_name')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{config("aws_s3_custom_domain")}'
-AWS_DEFAULT_ACL = None
-
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = 'assets/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('debug', cast = bool)
@@ -141,17 +126,36 @@ USE_L10N = True
 
 USE_TZ = True
 
+USE_S3 = config('use_s3', cast = bool)
+
+if USE_S3:
+    AWS_ACCESS_KEY_ID = config('aws_access_key_id')
+    AWS_SECRET_ACCESS_KEY = config('aws_secret')
+    AWS_STORAGE_BUCKET_NAME = config('aws_storage_bucket_name')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{config("aws_s3_custom_domain")}'
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_LOCATION = 'assets/'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+    STATICFILES_STORAGE = 'backend.storage_backends.StaticStorage'
+
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'backend.storage_backends.PublicMediaStorage'
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATIC_LOCATION = 'static'
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
-STATICFILES_STORAGE = 'backend.storage_backends.StaticStorage'
 
 # Media files
-PUBLIC_MEDIA_LOCATION = 'media'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
-DEFAULT_FILE_STORAGE = 'backend.storage_backends.PublicMediaStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
