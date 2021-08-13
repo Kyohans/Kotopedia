@@ -27,7 +27,8 @@ kotopedia-django/**/__pycache__/
 
 # directories
 kotopedia-django/media/
-kotopedia-django/staticfiles/
+kotopedia-django/static/
+kotopedia-django/kotopedia/migrations/
 
 # secret key
 kotopedia-django/backend/.env
