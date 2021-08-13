@@ -1,3 +1,21 @@
+@import '../App.css';
+
 .table-personality {
   width: 30%;
+}
+
+.word-listing {
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  -webkit-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  -moz-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  -ms-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  -o-transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.word-listing:hover {
+  transform: scale(1.025);
+  -webkit-transform: scale(1.025);
+  -moz-transform: scale(1.025);
+  -ms-transform: scale(1.025);
+  -o-transform: scale(1.025);
 }

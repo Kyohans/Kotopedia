@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
+import { Table, Input } from "reactstrap";
 import { renderPersonalities } from "./Kotodummy.js";
 import './Words.css';
 
@@ -13,6 +13,7 @@ class Words extends Component {
         password: "",
       },
 
+      query: "",
       wordList: [],
     };
   }
@@ -28,11 +29,14 @@ class Words extends Component {
     }
   }
 
-  renderWords = () => {
-    const words = this.state.wordList;
+  renderWords = (query) => {
+    const words = query === "" ? this.state.wordList 
+                                : this.state.wordList.filter(w => (
+                                  w.word.toLowerCase().includes(query)
+                                ));
 
     return words.map(w => (
-      <tr>
+      <tr class = "word-listing">
         <td>{w.word}</td>
         <td class = "table-personality">
             {
@@ -48,10 +52,19 @@ class Words extends Component {
     ));
   };
 
+  inputHandler = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     return (
       <main className = "content">
         <h1 className = "text-black text-uppercase text-center my-4">Words</h1>
+        <div id = "filters">
+          <input placeholder = "Search words..." class = "search-field" name = "query" type = "text" value = {this.state.query} onChange = {this.inputHandler}/>
+        </div>
         <div className = "row">
           <div className = "col-md-6 col-sm-10 mx-auto p-0">
             <div>
@@ -64,7 +77,7 @@ class Words extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.renderWords()}
+                  {this.renderWords(this.state.query)}
                 </tbody>
               </Table>
             </div>

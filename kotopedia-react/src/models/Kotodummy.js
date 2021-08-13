@@ -3,11 +3,19 @@ import './Kotodummy.css';
 import { 
   Card,
   CardBody,
-  CardText,
   CardTitle,
   CardImg,
   Row,
-  Col, } from "reactstrap";
+  Col,
+  Input,
+  InputGroup,
+  InputGroupText,
+  InputGroupAddon, } from "reactstrap";
+
+export function renderPersonalities(personality) {
+  const path = "img/" + personality + ".png";
+  return <img class = "personality" src = {path} alt = {personality}/>
+}
 
 class Kotodummies extends Component {
   constructor(props) {
@@ -20,9 +28,11 @@ class Kotodummies extends Component {
         personality: [],
         stage: "",
         rarity: "",
+        image: "",
       },
 
-      kotodummyList: []
+      kotodummyList: [],
+      query: ""
     };
   }
 
@@ -37,69 +47,75 @@ class Kotodummies extends Component {
     }
   }
 
-  renderImage = () => {
-    const image = this.id + "_" + this.name + ".jpg";
-
-    return "https://koto-assets.s3.us-east-2.amazonaws.com/assets/thumbs/" +  image;
-  }
-
-  /*async getImage() {
-    try {
-      const res = await fetch('http://localhost:8000/api')
-    }
-  }*/
-
-  renderPersonalities(personality) {
-    console.log(personality);
-    switch(personality) {
-      case "Cheerful":
-        return <img class = "personality" src = "img/Cheerful.png" alt = "Cheerful"/>
-      case "Cute":
-        return <img class = "personality" src = "img/Cute.png" alt = "Cute"/>
-      case "Dark":
-        break;
-      case "Cool":
-        break;
-      case "Serious":
-        return <img class = "personality" src = "img/Serious.png" alt = "Serious"/>
-      default:
-        break;
-    }
-  }
-
-  renderKotodummies = () => {
-    const kotodummies = this.state.kotodummyList;
+  renderKotodummies = (query) => {
+    const kotodummies = query === "" ? this.state.kotodummyList 
+                                    : this.state.kotodummyList.filter(k => (
+                                      k.name.toLowerCase().includes(query)
+                                      ));
 
     return kotodummies.map(kotodummy => (
       <Card>
         <CardBody>
-          <CardImg src = {kotodummy.map(this.renderImage)} />
-          <br/>
-          <CardTitle tag = "h4">{kotodummy.name}</CardTitle>
-          <hr/>
-          <CardText>{kotodummy.stage} {kotodummy.rarity ? ", {kotodummy.rarity}" : "" }</CardText>
-          <CardBody>{kotodummy.description}</CardBody>
-          <CardText>
-            <Row>
-              <Col>
-                {kotodummy.personality.split(',').map(this.renderPersonalities)}
-              </Col>
-            </Row>
-          </CardText>
+          <CardImg class = "kotodummy-image" src = {kotodummy.image ? kotodummy.image : "img/default_kotodummy.png"}/>
+            <CardBody class = "kotodummy-card-body">  
+              <CardTitle tag = "h4">{kotodummy.name}</CardTitle>
+              <hr/>
+              <Row>
+                <Col>
+                  <p class = "kotodummy-stage">
+                    {kotodummy.stage}
+                  </p>
+                </Col>
+                <Col>
+                  <p class = "kotodummy-rarity">
+                    {kotodummy.rarity === '-' ? '' : kotodummy.rarity}
+                  </p>
+                </Col>
+              </Row>
+              <p class = "kotodummy-personalities">
+                {
+                  kotodummy.personality.split(',').map(function (p) {
+                    return p.trim();
+                  }).map(
+                    renderPersonalities
+                  )
+                }
+              </p>
+              <div class = "kotodummy-description">{kotodummy.description}</div>
+            </CardBody>
         </CardBody>
       </Card>
     ));
   };
 
+  inputHandler = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     return (
       <main className = "content">
         <h1 className = "text-black text-uppercase text-center my-4">Kotodummies</h1>
-        <div className = "row">
-          <div className = "col-md-6 col-sm-10 mx-auto p-0">
+        <div class = "top-search-div">
+          <p>Hello</p>
+          <div class = "search-field">
+            <InputGroup>
+              <InputGroupAddon addonType = "prepend">
+                <div class = "unselectable">
+                  <InputGroupText class = "unselectable">🔍</InputGroupText>
+                </div>
+              </InputGroupAddon>
+              <Input placeholder = "Search kotodummies..." class = "search-field" name = "query" type = "text" value = {this.state.query} onChange = {this.inputHandler}/>
+            </InputGroup>
+          </div>
+        </div>
+        <div className = "card-row">
+          <div className = "col-md-8 col-sm-10 mx-auto p-0">
             <div>
               <ul className = "card-grid">
-              {this.renderKotodummies()}
+                {this.renderKotodummies(this.state.query)}
               </ul>
             </div>
           </div>

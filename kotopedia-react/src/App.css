@@ -1,3 +1,61 @@
+
+:root {
+  --bg-color1: #fff;
+  --card-color: #EFEDF5;
+  --alt-color: #ffeecf;
+  --fg-color: #2A2E45;
+  --light-color1: #f0edee;
+  --light-color2: #faf9f9;
+}
+
+#root, body {
+  background-color: var(--bg-color1);
+  color: var(--fg-color);
+}
+
+h1 {
+  text-shadow: 0 0 2px rgba(10, 9, 12, 0.50);
+  color: var(--alt-color);
+}
+
+a:any-link, a:hover, a:active {
+  text-decoration: none;
+}
+
+.form-control {
+  background-color: var(--light-color2);
+  width: 30%;
+  margin: auto;
+  display: flexbox;
+  justify-content: right;
+}
+
+#filters {
+  margin: auto;
+}
+
+.top-search-div {
+  display: inline;
+  word-wrap: break-word;
+  width: 50%;
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.search-field {
+  width: 20%;
+  margin: auto;
+  display: flexbox;
+  justify-content: right;
+}
+
 .App {
   text-align: center;
 }
