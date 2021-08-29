@@ -82,7 +82,7 @@ class Word(models.Model):
   
   @admin.display
   def password(self):
-    return self.kotodummy
+    return self.kotodummy.name if self.kotodummy else ""
 
   def save(self, *args, **kwargs):
     if self.personality_set.count() > 6:
