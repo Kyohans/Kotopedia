@@ -6,18 +6,12 @@ import {
   CardTitle,
   CardImg,
   Row,
-  Col,
-  Input,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon, } from "reactstrap";
+  Col, } from "reactstrap";
 
-export function renderPersonalities(personality) {
-  const path = "img/" + personality + ".png";
-  return <img class = "personality" src = {path} alt = {personality}/>
-}
+import { Search, renderPersonalities } from "../App.js";
 
-class Kotodummies extends Component {
+
+export default class Kotodummies extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,20 +91,7 @@ class Kotodummies extends Component {
   render() {
     return (
       <main className = "content">
-        <h1 className = "text-black text-uppercase text-center my-4">Kotodummies</h1>
-        <div class = "top-search-div">
-          <p>Hello</p>
-          <div class = "search-field">
-            <InputGroup>
-              <InputGroupAddon addonType = "prepend">
-                <div class = "unselectable">
-                  <InputGroupText class = "unselectable">🔍</InputGroupText>
-                </div>
-              </InputGroupAddon>
-              <Input placeholder = "Search kotodummies..." class = "search-field" name = "query" type = "text" value = {this.state.query} onChange = {this.inputHandler}/>
-            </InputGroup>
-          </div>
-        </div>
+        <Search placeholder = "Search kotodummies..." value = {this.state.query} onChange = {this.inputHandler}/>
         <div className = "card-row">
           <div className = "col-md-8 col-sm-10 mx-auto p-0">
             <div>
@@ -124,5 +105,3 @@ class Kotodummies extends Component {
     )
   }
 }
-
-export default Kotodummies

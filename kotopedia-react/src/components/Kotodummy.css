@@ -43,6 +43,8 @@ hr {
   -moz-transform: scale(1.025);
   -ms-transform: scale(1.025);
   -o-transform: scale(1.025);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .card-img {
@@ -59,7 +61,7 @@ hr {
 
 .card-body{
   padding: 0rem 0rem !important;
-  height: 450px;
+  height: 400px;
 }
 
 .card-body:hover {
@@ -97,4 +99,5 @@ hr {
   margin-left: 1em;
   margin-right: 1em;
   display: inline-block;
+  font-size: 13px;
 }

@@ -18,4 +18,6 @@
   -moz-transform: scale(1.025);
   -ms-transform: scale(1.025);
   -o-transform: scale(1.025);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }

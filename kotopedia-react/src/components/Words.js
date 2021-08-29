@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Table, Input } from "reactstrap";
-import { renderPersonalities } from "./Kotodummy.js";
+import { Table } from "reactstrap";
+import { renderPersonalities } from "../App.js";
+import { Search } from "../App.js";
 import './Words.css';
 
 class Words extends Component {
@@ -61,12 +62,9 @@ class Words extends Component {
   render() {
     return (
       <main className = "content">
-        <h1 className = "text-black text-uppercase text-center my-4">Words</h1>
-        <div id = "filters">
-          <input placeholder = "Search words..." class = "search-field" name = "query" type = "text" value = {this.state.query} onChange = {this.inputHandler}/>
-        </div>
+        <Search placeholder = "Search words..." value = {this.state.query} onChange = {this.inputHandler}/>
         <div className = "row">
-          <div className = "col-md-6 col-sm-10 mx-auto p-0">
+          <div className = "col-md-6 col-sm-10 mx-auto p-4">
             <div>
               <Table hover = "true" responsive = "true">
                 <thead>
