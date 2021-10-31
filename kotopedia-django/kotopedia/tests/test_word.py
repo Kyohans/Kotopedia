@@ -61,11 +61,3 @@ class WordModelTest(TestCase):
     w.save()
 
     self.assertEqual(3, w.personality_set.count())
-
-  def test_word_must_be_unique(self):
-    word_one = create_word('Test')
-    word_one.save()
-
-    word_two = create_word('Test')
-
-    self.assertRaises(IntegrityError, word_two.save)
