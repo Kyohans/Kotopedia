@@ -90,7 +90,7 @@ export default class Kotodummies extends Component {
 
   render() {
     return (
-      <main className = "content">
+      <>
         <Search placeholder = "Search kotodummies..." value = {this.state.query} onChange = {this.inputHandler}/>
         <div className = "card-row">
           <div className = "col-md-8 col-sm-10 mx-auto p-0">
@@ -101,7 +101,7 @@ export default class Kotodummies extends Component {
             </div>
           </div>
         </div>
-      </main>
+      </>
     )
   }
 }
