@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Kotodummies from './components/Kotodummy.js';
 import Words from './components/Words.js';
-import Landing from './components/Landing.js';
+import Landing, { About } from './components/Landing.js';
 import {
   Navbar,
   Nav,
@@ -42,6 +42,9 @@ const TopBar = () => {
             <NavItem>
               <Link to = "/words">Words</Link>
             </NavItem>
+            <NavItem>
+              <Link to = "/about">About</Link>
+            </NavItem>
           </Nav>
         </Navbar>
         <main>
@@ -49,6 +52,7 @@ const TopBar = () => {
             <Route path = "/" exact component = {Landing}/>
             <Route path = "/kotodummies" component = {Kotodummies}/>
             <Route path = "/words" component = {Words} />
+            <Route path = "/about" component = {About} />
           </Switch>
         </main>
     </Router>
