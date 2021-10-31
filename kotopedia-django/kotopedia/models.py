@@ -58,7 +58,7 @@ class Kotodummy(models.Model):
     return self.rarity_type if self.rarity_type else '-'
 
 class Word(models.Model):
-  word = models.CharField(max_length = 50, unique = True)
+  word = models.CharField(max_length = 50)
   stage_type = models.CharField(max_length = 20, choices = StageType.choices, blank = True)
   kotodummy = models.OneToOneField(Kotodummy, on_delete = models.DO_NOTHING, null = True, blank = True)
 
