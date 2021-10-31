@@ -11,6 +11,7 @@ class Words extends Component {
       activeItem: {
         word: "",
         personality: "",
+        stage: "",
         password: "",
       },
 
@@ -48,6 +49,7 @@ class Words extends Component {
               )
             }
         </td>
+        <td>{w.stage ? w.stage : "-"}</td>
         <td>{w.password ? w.password : "-"}</td>
       </tr>
     ));
@@ -61,7 +63,8 @@ class Words extends Component {
 
   render() {
     return (
-      <main className = "content">
+      <>
+        <title>Kotopedia - Words</title>
         <Search placeholder = "Search words..." value = {this.state.query} onChange = {this.inputHandler}/>
         <div className = "row">
           <div className = "col-md-6 col-sm-10 mx-auto p-4">
@@ -71,6 +74,7 @@ class Words extends Component {
                   <tr>
                     <th>Word</th>
                     <th>Personality</th>
+                    <th>Stage</th>
                     <th>Password</th>
                   </tr>
                 </thead>
@@ -81,7 +85,7 @@ class Words extends Component {
             </div>
           </div>
         </div>
-      </main>
+      </>
     )
   }
 }
