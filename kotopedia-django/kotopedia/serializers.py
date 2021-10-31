@@ -20,5 +20,6 @@ class WordSerializer(serializers.ModelSerializer):
     fields = (
       'word',
       'personality',
+      'stage',
       'password',
     )
